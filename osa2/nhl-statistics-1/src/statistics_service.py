@@ -1,15 +1,9 @@
-from player_reader import PlayerReader
-
-
-
 class StatisticsService:
-    def __init__(self):
-        reader = PlayerReader()
-
-        self._players = reader.get_players()
+    def __init__(self, reader):
+        self._reader = reader
 
     def search(self, name):
-        for player in self._players:
+        for player in self._reader.get_players():
             if name in player.name:
                 return player
 
@@ -18,18 +12,18 @@ class StatisticsService:
     def team(self, team_name):
         players_of_team = filter(
             lambda player: player.team == team_name,
-            self._players
+            self._reader.get_players()
         )
 
         return list(players_of_team)
 
     def top(self, how_many):
-        # metodin käyttämä apufufunktio voidaan määritellä näin
+        # metodin käyttämä apufunktio voidaan määritellä näin
         def sort_by_points(player):
             return player.points
 
         sorted_players = sorted(
-            self._players,
+            self._reader.get_players(),
             reverse=True,
             key=sort_by_points
         )
